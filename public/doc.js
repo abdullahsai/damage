@@ -78,9 +78,12 @@ async function downloadPdf(id) {
     const horizontalPad = 3;
     let y = 45;
     const lineH = 6;
+    const splitLines = (txt, maxW) =>
+        doc.getTextWidth(txt) > maxW ? doc.splitTextToSize(txt, maxW) : [txt];
+
     headerRows.forEach(([label, value]) => {
-        const labelLines = doc.splitTextToSize(label, labelW - horizontalPad * 2);
-        const valueLines = doc.splitTextToSize(value, valueW - horizontalPad * 2);
+        const labelLines = splitLines(label, labelW - horizontalPad * 2);
+        const valueLines = splitLines(value, valueW - horizontalPad * 2);
         const lines = Math.max(labelLines.length, valueLines.length);
         const rowH = lines * lineH + verticalPad * 2;
         doc.rect(startX, y, valueW, rowH);
@@ -109,7 +112,7 @@ async function downloadPdf(id) {
     const itemStartX = (doc.internal.pageSize.getWidth() - tableW) / 2;
 
     function drawItemRow(desc, cost, qty, total) {
-        const descLines = doc.splitTextToSize(desc, colWDesc - horizontalPad * 2);
+        const descLines = splitLines(desc, colWDesc - horizontalPad * 2);
         const lines = Math.max(descLines.length, 1);
         const rowH = lines * lineH + verticalPad * 2;
         doc.rect(itemStartX, y, colWTotal, rowH);
