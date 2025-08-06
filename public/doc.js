@@ -49,6 +49,7 @@ async function downloadPdf(id) {
     doc.addFileToVFS('amiri.ttf', base64);
     doc.addFont('amiri.ttf', 'Amiri', 'normal');
     doc.setFont('Amiri');
+    doc.setR2L(true);
     try {
         const logoRes = await fetch('/logo.png');
         const logoBuf = await logoRes.arrayBuffer();
